@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:pooping_flutter_app/sign_up_page.dart';
 
+import 'forget_password_page.dart';
 import 'home_page.dart';
 import 'http_request.dart';
 
@@ -18,7 +19,6 @@ class _LoginPageState extends State<LoginPage> {
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  Future<http.Response>? _futureData;
 
   @override
   void dispose() {
@@ -26,6 +26,21 @@ class _LoginPageState extends State<LoginPage> {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> send_login_info() async {
+    String response = await send_login_request(emailController.text,
+        passwordController.text);
+
+    if (response.compareTo('YES') == 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MyHomePage(title: 'Home Page',)),
+      );
+    }
+    else {
+      print("Can not login ");
+    }
   }
 
   @override
@@ -57,18 +72,9 @@ class _LoginPageState extends State<LoginPage> {
                 textStyle: const TextStyle(fontSize: 20),
               ),
               onPressed: (){
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      // Retrieve the text the that user has entered by using the
-                      // TextEditingController.
-                      content: Text(emailController.text),
-                    );
-                  },
-                );
+                send_login_info();
               },
-              child: const Text('Show Email'),
+              child: const Text('Log In'),
             ),
             TextButton(
               style: TextButton.styleFrom(
@@ -77,18 +83,22 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: (){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MyHomePage(title: 'Home Page',)),
+                  MaterialPageRoute(builder: (context) => const SignUpPage(title: 'Sign Up Page',)),
                 );
               },
-              child: const Text('Log In'),
+              child: const Text('Sign Up'),
             ),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  _futureData = send_request();
-                });
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 10),
+              ),
+              onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ForgetPasswordPage(title: 'Forget Password Page',)),
+                );
               },
-              child: const Text('Http request'),
+              child: const Text('forget password'),
             ),
           ],
         ),
