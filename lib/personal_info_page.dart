@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pooping_flutter_app/photo_and_bio_page.dart';
 
-import 'email_confirm_page.dart';
 import 'http_request.dart';
 
 class PersonalInfoPage extends StatefulWidget {
