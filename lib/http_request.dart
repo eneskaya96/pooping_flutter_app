@@ -9,10 +9,10 @@ Future<String> send_request(body, end_point,  is_post) async {
   String url = base_url + end_point;
 
   if(is_post){
-    response = await http.get(Uri.parse(url),);
+    response = await http.post(Uri.parse(url),body: body);
   }
   else {
-    response = await http.post(Uri.parse(url),body: body);
+    response = await http.get(Uri.parse(url),);
   }
 
   if (response.statusCode == 200) { return response.body;}
