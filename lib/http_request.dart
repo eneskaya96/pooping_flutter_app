@@ -1,13 +1,14 @@
-
+import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+String base_url = 'http://127.0.0.1:5000';
+
 Future<http.Response> send_request() async {
   final response = await http.get(
-    Uri.parse('http://127.0.0.1:5000'),
+    Uri.parse(base_url),
   );
 
-  print(response.body);
   if (response.statusCode == 200) {
     // If the server did return a 201 CREATED response,
     // then parse the JSON.
@@ -16,3 +17,78 @@ Future<http.Response> send_request() async {
     throw Exception('Failed HTTP REQUEST');
   }
 }
+
+
+Future<String> send_login_request(email, password) async {
+
+  var body = jsonEncode({ 'email': email,
+                          'password': password} );
+
+  final response = await http.post(
+      Uri.parse(base_url + '/login'),
+      body: body
+  );
+
+  if (response.statusCode == 200) {
+    // If the server did return a 201 CREATED response,
+    // then parse the JSON.
+    return response.body;
+  } else {
+    throw Exception('Failed HTTP REQUEST');
+  }
+}
+
+Future<String> send_code_to_email(email) async {
+
+  var body = jsonEncode({ 'email': email} );
+
+  final response = await http.post(
+      Uri.parse(base_url + '/send_code'),
+      body: body
+  );
+
+  if (response.statusCode == 200) {
+    // If the server did return a 201 CREATED response,
+    // then parse the JSON.
+    return response.body;
+  } else {
+    throw Exception('Failed HTTP REQUEST');
+  }
+}
+
+Future<String> send_code_to_server(code) async {
+
+  var body = jsonEncode({ 'code': code} );
+
+  final response = await http.post(
+      Uri.parse(base_url + '/send_code_to_server'),
+      body: body
+  );
+
+  if (response.statusCode == 200) {
+    // If the server did return a 201 CREATED response,
+    // then parse the JSON.
+    return response.body;
+  } else {
+    throw Exception('Failed HTTP REQUEST');
+  }
+}
+
+Future<String> change_password_request(new_password) async {
+
+  var body = jsonEncode({ 'new_password': new_password} );
+
+  final response = await http.post(
+      Uri.parse(base_url + '/change_password'),
+      body: body
+  );
+
+  if (response.statusCode == 200) {
+    // If the server did return a 201 CREATED response,
+    // then parse the JSON.
+    return response.body;
+  } else {
+    throw Exception('Failed HTTP REQUEST');
+  }
+}
+
