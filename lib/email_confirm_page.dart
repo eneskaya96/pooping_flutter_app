@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:pooping_flutter_app/personal_info_page.dart';
 
 import 'change_password_page.dart';
 import 'http_request.dart';
 
 class EmailConfirmPage extends StatefulWidget {
-  const EmailConfirmPage({Key? key, required this.title}) : super(key: key);
+  const EmailConfirmPage({Key? key, required this.title,
+    required this.previous_page}) : super(key: key);
 
   final String title;
+  final String previous_page;
 
   @override
   State<EmailConfirmPage> createState() => _EmailConfirmPageState();
@@ -28,10 +31,19 @@ class _EmailConfirmPageState extends State<EmailConfirmPage> {
     String response = await send_code_to_server(codeController.text);
 
     if (response.compareTo('YES') == 0) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const ChangePasswordPage(title: 'Home Page',)),
-      );
+      if (widget.previous_page ==  'SignUpPage'){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const PersonalInfoPage(title: 'Personel Info Page',)),
+        );
+      }
+      else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ChangePasswordPage(title: 'Change Password Page',)),
+        );
+      }
+
     }
     else {
       print("Can not login ");
@@ -62,7 +74,7 @@ class _EmailConfirmPageState extends State<EmailConfirmPage> {
               onPressed: (){
                 send_code_to_server_func();
               },
-              child: const Text('Send Code'),
+              child: const Text('Confirm'),
             ),
           ],
         ),

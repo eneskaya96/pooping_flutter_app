@@ -1,43 +1,45 @@
 import 'package:flutter/material.dart';
 
-import 'email_confirm_page.dart';
+import 'home_page.dart';
 import 'http_request.dart';
 
-class ForgetPasswordPage extends StatefulWidget {
-  const ForgetPasswordPage({Key? key, required this.title}) : super(key: key);
+class PhotoAndBioPage extends StatefulWidget {
+  const PhotoAndBioPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<ForgetPasswordPage> createState() => _ForgetPasswordPageState();
+  State<PhotoAndBioPage> createState() => _PhotoAndBioPageState();
 }
 
 
-class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
+class _PhotoAndBioPageState extends State<PhotoAndBioPage> {
 
-  final emailController = TextEditingController();
+  final bio_controller = TextEditingController();
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    emailController.dispose();
+    bio_controller.dispose();
     super.dispose();
   }
 
-  Future<void> send_code() async {
-    String response = await send_code_to_email(emailController.text);
+  Future<void> upload_photo() async {
+
+    String response = await upload_photo_request(bio_controller.text
+    );
 
     if (response.compareTo('YES') == 0) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const EmailConfirmPage(title: 'Email Confirm Page',
-        previous_page: 'ForgetPasswordPage',)),
+        MaterialPageRoute(builder: (context) => const MyHomePage(title: 'Home Page')),
       );
     }
     else {
       print("Can not login ");
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +51,17 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            const TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Photo',
+              ),
+            ),
             TextField(
-              controller: emailController,
+              controller: bio_controller,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: 'E-mail',
+                hintText: 'Bio',
               ),
             ),
             TextButton(
@@ -61,9 +69,9 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                 textStyle: const TextStyle(fontSize: 20),
               ),
               onPressed: (){
-                send_code();
+                upload_photo();
               },
-              child: const Text('Send Code'),
+              child: const Text('Continue'),
             ),
           ],
         ),

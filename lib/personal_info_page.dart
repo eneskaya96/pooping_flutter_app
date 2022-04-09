@@ -1,46 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:pooping_flutter_app/photo_and_bio_page.dart';
 
 import 'email_confirm_page.dart';
 import 'http_request.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key, required this.title}) : super(key: key);
+class PersonalInfoPage extends StatefulWidget {
+  const PersonalInfoPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<PersonalInfoPage> createState() => _PersonalInfoPageState();
 }
 
 
-class _SignUpPageState extends State<SignUpPage> {
+class _PersonalInfoPageState extends State<PersonalInfoPage> {
 
-  final email_controller = TextEditingController();
-  final password_controller = TextEditingController();
-  final re_password_controller = TextEditingController();
+  final name_controller = TextEditingController();
+  final gender_controller = TextEditingController();
+  final age_controller = TextEditingController();
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    email_controller.dispose();
-    password_controller.dispose();
-    re_password_controller.dispose();
+    name_controller.dispose();
+    gender_controller.dispose();
+    age_controller.dispose();
     super.dispose();
   }
 
-  Future<void> create_user() async {
+  Future<void> send_personal_info() async {
 
-    if (password_controller.text != re_password_controller.text){
-      return;
-    }
-    String response = await create_user_request(email_controller.text,
-        password_controller.text);
+    String response = await send_personal_info_request(name_controller.text,
+        gender_controller.text,
+        age_controller.text
+    );
 
     if (response.compareTo('YES') == 0) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const EmailConfirmPage(title: 'Email Confirm Page',
-          previous_page: 'SignUpPage',)),
+        MaterialPageRoute(builder: (context) => const PhotoAndBioPage(title: 'Photo And Bio Page',)),
       );
     }
     else {
@@ -60,24 +59,24 @@ class _SignUpPageState extends State<SignUpPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextField(
-              controller: email_controller,
+              controller: name_controller,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: 'E-mail',
+                hintText: 'Name',
               ),
             ),
             TextField(
-              controller: password_controller,
+              controller: gender_controller,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: 'Password',
+                hintText: 'Gender',
               ),
             ),
             TextField(
-              controller: re_password_controller,
+              controller: age_controller,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: 'Re-Password',
+                hintText: 'Age',
               ),
             ),
             TextButton(
@@ -85,9 +84,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 textStyle: const TextStyle(fontSize: 20),
               ),
               onPressed: (){
-                create_user();
+                send_personal_info();
               },
-              child: const Text('Sig Up'),
+              child: const Text('Continue'),
             ),
           ],
         ),
