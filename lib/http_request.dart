@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-String base_url = 'http://127.0.0.1:5000';
+String base_url = 'http://localhost:5005/api';
 
 Future<String> send_request(body, end_point,  is_post) async {
   final http.Response response;
@@ -44,7 +44,7 @@ Future<String> change_password_request(new_password) async {
 Future<String> create_user_request(email, password) async {
   var body = jsonEncode({ 'email': email,
                           'password': password} );
-  return send_request(body, '/create_user', true);
+  return send_request(body, '/users/create_user', true);
 }
 
 Future<String> send_personal_info_request(name, gender, age) async {
